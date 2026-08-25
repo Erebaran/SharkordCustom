@@ -12,6 +12,7 @@ import {
   onUserUpdateRoute
 } from './events';
 import { getUserInfoRoute } from './get-user-info';
+import { getUserRolesAdminRoute } from './get-user-roles-admin';
 import { getUsersRoute } from './get-users';
 import { kickRoute } from './kick';
 import { removeRoleRoute } from './remove-role';
@@ -24,6 +25,7 @@ export const usersRouter = t.router({
   changeBanner: changeBannerRoute,
   addRole: addRoleRoute,
   removeRole: removeRoleRoute,
+  getRoles: getUserRolesAdminRoute,
   update: updateUserRoute,
   updatePassword: updatePasswordRoute,
   getInfo: getUserInfoRoute,

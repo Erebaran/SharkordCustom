@@ -46,7 +46,7 @@ const VoiceButtons = memo(({ currentVoiceChannelId }: TVoiceButtonsProps) => {
         variant="ghost"
         size="sm"
         onClick={handleToggleVoiceChat}
-        className="h-7 px-2 transition-all duration-200 ease-in-out"
+        className="h-8 w-8 p-0 transition-all duration-200 ease-in-out"
       >
         <Tooltip
           content={isVoiceChatOpen ? t('closeVoiceChat') : t('openVoiceChat')}

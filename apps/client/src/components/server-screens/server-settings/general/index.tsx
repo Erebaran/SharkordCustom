@@ -15,6 +15,7 @@ import {
 } from '@sharkord/ui';
 import { memo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { BannerManager } from './banner-manager';
 import { LogoManager } from './logo-manager';
 
 const General = memo(() => {
@@ -73,6 +74,8 @@ const General = memo(() => {
         </Group>
 
         <LogoManager logo={logo} refetch={refetch} />
+
+        <BannerManager refetch={refetch} />
 
         <Group
           label={t('allowNewUsersLabel')}

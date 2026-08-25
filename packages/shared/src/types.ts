@@ -59,6 +59,9 @@ export type TPublicServerSettings = Pick<
   | 'showWelcomeDialog'
   | 'storageSignedUrlsEnabled'
 > & {
+  logo: TFile | null;
+  banner: TFile | null;
+
   webRtcMaxBitrate: number;
 };
 

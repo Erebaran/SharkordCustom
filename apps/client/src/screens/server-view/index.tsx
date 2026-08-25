@@ -1,7 +1,10 @@
+import { BannerControls } from '@/components/banner-controls';
 import { LeftSidebar } from '@/components/left-sidebar';
 import { ModViewSheet } from '@/components/mod-view-sheet';
 import { Protect } from '@/components/protect';
 import { RightSidebar } from '@/components/right-sidebar';
+import { ServerHero } from '@/components/server-hero';
+import { ServerRail } from '@/components/server-rail';
 import { ThreadSidebar } from '@/components/thread-sidebar';
 import { TopBar } from '@/components/top-bar';
 import { VoiceChatSidebar } from '@/components/voice-chat-sidebar';
@@ -24,6 +27,7 @@ const ServerView = memo(() => {
   const [isDesktopRightSidebarOpen, setIsDesktopRightSidebarOpen] = useState(
     getLocalStorageItemBool(LocalStorageKey.RIGHT_SIDEBAR_STATE, true)
   );
+
   const dmsOpen = useDmsOpen();
   const selectedDmChannelId = useSelectedDmChannelId();
   const publicSettings = usePublicServerSettings();
@@ -44,7 +48,6 @@ const ServerView = memo(() => {
       setIsMobileUsersOpen(false);
       return;
     }
-
     setIsMobileMenuOpen(true);
   }, [isMobileMenuOpen, isMobileUsersOpen]);
 
@@ -52,10 +55,8 @@ const ServerView = memo(() => {
     if (isMobileMenuOpen || isMobileUsersOpen) {
       setIsMobileMenuOpen(false);
       setIsMobileUsersOpen(false);
-
       return;
     }
-
     setIsMobileUsersOpen(true);
   }, [isMobileMenuOpen, isMobileUsersOpen]);
 
@@ -64,6 +65,12 @@ const ServerView = memo(() => {
     onSwipeLeft: handleSwipeLeft
   });
 
+  // DM MEMBERS TEMPORARIO V7.8A
+  useEffect(() => {
+    if (dmsOpen) {
+      setIsMobileUsersOpen(false);
+    }
+  }, [dmsOpen]);
   useEffect(() => {
     if (publicSettings?.directMessagesEnabled === false && dmsOpen) {
       setDmsOpen(false);
@@ -78,62 +85,76 @@ const ServerView = memo(() => {
     <VoiceProvider>
       <div
         data-testid={TestId.SERVER_VIEW}
-        className="flex h-dvh flex-col bg-background text-foreground dark"
+        className="flex h-dvh min-h-0 flex-col bg-background text-foreground dark"
         {...swipeHandlers}
       >
-        <TopBar
-          onToggleRightSidebar={handleDesktopRightSidebarToggle}
-          isOpen={isDesktopRightSidebarOpen}
-        />
+        <TopBar />
+
         <div className="relative flex min-h-0 flex-1 overflow-hidden">
           <PreventBrowser />
 
-          {isMobileMenuOpen && (
-            <div
-              className="md:hidden fixed inset-0 bg-black/50 z-30"
-              onClick={() => setIsMobileMenuOpen(false)}
-            />
-          )}
+          <ServerRail />
 
-          {isMobileUsersOpen && (
-            <div
-              className="lg:hidden fixed inset-0 bg-black/50 z-30"
-              onClick={() => setIsMobileUsersOpen(false)}
-            />
-          )}
+          <div className="flex min-w-0 flex-1 flex-col">
+            {!dmsOpen && (
+              <div className="relative shrink-0">
+                <ServerHero />
 
-          <LeftSidebar
-            className={cn(
-              'md:relative md:flex fixed inset-0 left-0 h-full z-40 md:z-0 transition-transform duration-300 ease-in-out',
-              isMobileMenuOpen
-                ? 'translate-x-0'
-                : '-translate-x-full md:translate-x-0'
+                <BannerControls
+                  onToggleRightSidebar={handleDesktopRightSidebarToggle}
+                  isOpen={isDesktopRightSidebarOpen}
+                />
+              </div>
             )}
-          />
 
-          <ContentWrapper
-            isDmMode={dmsOpen}
-            selectedDmChannelId={selectedDmChannelId}
-          />
+            <div className="relative flex min-h-0 flex-1 overflow-hidden">
+              {isMobileMenuOpen && (
+                <div
+                  className="fixed inset-0 z-30 bg-black/50 md:hidden"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                />
+              )}
 
-          <VoiceChatSidebar />
+              {isMobileUsersOpen && (
+                <div
+                  className="fixed inset-0 z-30 bg-black/50 lg:hidden"
+                  onClick={() => setIsMobileUsersOpen(false)}
+                />
+              )}
 
-          <ThreadSidebar isOpen={isThreadSidebarOpen} />
+              <LeftSidebar
+                className={cn(
+                  'fixed inset-y-0 left-0 z-40 h-full transition-transform duration-300 ease-in-out md:relative md:inset-auto md:z-20 md:flex',
+                  isMobileMenuOpen
+                    ? 'translate-x-0'
+                    : '-translate-x-full md:translate-x-0'
+                )}
+              />
 
-          <RightSidebar
-            className={cn(
-              'fixed top-0 bottom-0 right-0 h-full z-40',
-              'lg:relative lg:z-0',
-              isMobileUsersOpen
-                ? 'translate-x-0 lg:translate-x-0'
-                : 'translate-x-full lg:translate-x-0'
-            )}
-            isOpen={isMobileUsersOpen || isDesktopRightSidebarOpen}
-          />
+              <ContentWrapper
+                isDmMode={dmsOpen}
+                selectedDmChannelId={selectedDmChannelId}
+              />
 
-          <Protect permission={Permission.MANAGE_USERS}>
-            <ModViewSheet />
-          </Protect>
+              <VoiceChatSidebar />
+              <ThreadSidebar isOpen={isThreadSidebarOpen} />
+
+              <RightSidebar
+                className={cn(
+                  'fixed top-0 right-0 bottom-0 z-40 h-full',
+                  'lg:relative lg:z-0',
+                  isMobileUsersOpen
+                    ? 'translate-x-0 lg:translate-x-0'
+                    : 'translate-x-full lg:translate-x-0'
+                )}
+                isOpen={!dmsOpen && (isMobileUsersOpen || isDesktopRightSidebarOpen)}
+              />
+
+              <Protect permission={Permission.MANAGE_USERS}>
+                <ModViewSheet />
+              </Protect>
+            </div>
+          </div>
         </div>
       </div>
     </VoiceProvider>

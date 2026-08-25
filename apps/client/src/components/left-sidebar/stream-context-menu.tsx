@@ -1,4 +1,5 @@
 import { UserAvatar } from '@/components/user-avatar';
+import { disconnectVoiceUser } from '@/features/server/voice/actions';
 import { useStreamVolumeControl } from '@/components/voice-provider/hooks/use-stream-volume-control';
 import {
   Button,
@@ -7,7 +8,7 @@ import {
   ContextMenuTrigger,
   Slider
 } from '@sharkord/ui';
-import { Router, Volume2, VolumeX } from 'lucide-react';
+import { LogOut, Router, Volume2, VolumeX } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -32,6 +33,12 @@ type TStreamContextMenuProps = {
 
 const StreamContextMenu = (props: TStreamContextMenuProps) => {
   const { t } = useTranslation('sidebar');
+
+
+  const handleDisconnectUser = async () => {
+    if (props.type !== 'user') return;
+    await disconnectVoiceUser(props.userId);
+  };
 
   const { volume, isMuted, setVolume, toggleMute } = useStreamVolumeControl(
     props.type === 'user'
@@ -108,6 +115,18 @@ const StreamContextMenu = (props: TStreamContextMenuProps) => {
             </span>
             <span className="text-xs text-muted-foreground">{volume}%</span>
           </div>
+
+          {props.type === 'user' && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={handleDisconnectUser}
+              className="mt-3 w-full justify-start gap-2 text-red-500 hover:text-red-500"
+            >
+              <LogOut className="h-4 w-4" />
+              Desconectar da chamada
+            </Button>
+          )}
         </div>
       </ContextMenuContent>
     </ContextMenu>

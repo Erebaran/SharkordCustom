@@ -1,3 +1,4 @@
+import { UserAvatar } from '@/components/user-avatar';
 import {
   useVolumeControl,
   type TVolumeKey
@@ -7,10 +8,18 @@ import { useOwnUserId, useUserById } from '@/features/server/users/hooks';
 import { useVoice } from '@/features/server/voice/hooks';
 import { useStreamQualityData } from '@/hooks/use-stream-quality-data';
 import { cn } from '@/lib/utils';
+import { getTRPCClient } from '@/lib/trpc';
 import { StreamKind } from '@sharkord/shared';
 import { IconButton } from '@sharkord/ui';
 import { Monitor, ZoomIn, ZoomOut } from 'lucide-react';
-import { memo, useCallback, useMemo, type RefObject } from 'react';
+import {
+  memo,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type RefObject
+} from 'react';
 import { CardControls } from './card-controls';
 import { CardGradient } from './card-gradient';
 import { FullscreenButton } from './fullscreen-button';
@@ -87,6 +96,69 @@ const ScreenShareControls = memo(
   }
 );
 
+
+const MAX_VISIBLE_VIEWERS = 5;
+const VIEWERS_REFRESH_INTERVAL_MS = 2000;
+
+type TScreenViewerAvatarProps = {
+  userId: number;
+};
+
+const ScreenViewerAvatar = memo(({ userId }: TScreenViewerAvatarProps) => {
+  const viewer = useUserById(userId);
+
+  if (!viewer) return null;
+
+  return (
+    <div title={viewer.name} className="relative shrink-0">
+      <UserAvatar
+        userId={userId}
+        className="h-8 w-8 rounded-full ring-2 ring-black/80 shadow-lg"
+        showStatusBadge={false}
+        showUserPopover={false}
+      />
+    </div>
+  );
+});
+
+ScreenViewerAvatar.displayName = 'ScreenViewerAvatar';
+
+type TScreenShareViewersProps = {
+  viewerIds: number[];
+};
+
+const ScreenShareViewers = memo(({ viewerIds }: TScreenShareViewersProps) => {
+  if (viewerIds.length === 0) return null;
+
+  const visibleViewerIds = viewerIds.slice(0, MAX_VISIBLE_VIEWERS);
+  const remaining = Math.max(0, viewerIds.length - visibleViewerIds.length);
+
+  return (
+    <div
+      className="absolute top-3 left-3 z-30 flex items-center pointer-events-auto"
+      onMouseDown={(event) => event.stopPropagation()}
+      onDoubleClick={(event) => event.stopPropagation()}
+    >
+      <div className="flex -space-x-2">
+        {visibleViewerIds.map((viewerId) => (
+          <ScreenViewerAvatar key={viewerId} userId={viewerId} />
+        ))}
+      </div>
+
+      {remaining > 0 && (
+        <div
+          className="ml-2 h-7 min-w-7 px-1.5 rounded-full bg-black/75 border border-white/15 text-white text-[11px] font-semibold flex items-center justify-center shadow-lg"
+          title={`${remaining} more viewer${remaining === 1 ? '' : 's'}`}
+        >
+          +{remaining}
+        </div>
+      )}
+    </div>
+  );
+});
+
+ScreenShareViewers.displayName = 'ScreenShareViewers';
+
 type TScreenShareCardProps = {
   userId: number;
   isPinned?: boolean;
@@ -118,6 +190,52 @@ const ScreenShareCard = memo(
       hasScreenShareStream,
       hasScreenShareAudioStream
     } = useVoiceRefs(userId);
+
+    const [screenViewerIds, setScreenViewerIds] = useState<number[]>([]);
+
+    useEffect(() => {
+      if (!isOwnUser || !hasScreenShareStream) {
+        setScreenViewerIds([]);
+        return;
+      }
+
+      let disposed = false;
+
+      const refreshViewers = async () => {
+        try {
+          const viewerIds = await getTRPCClient().voice.getScreenViewers.query();
+          if (disposed) return;
+
+          const nextViewerIds = Array.from(new Set(viewerIds))
+            .filter((viewerId) => viewerId !== ownUserId)
+            .sort((a, b) => a - b);
+
+          setScreenViewerIds((currentViewerIds) => {
+            const unchanged =
+              currentViewerIds.length === nextViewerIds.length &&
+              currentViewerIds.every(
+                (viewerId, index) => viewerId === nextViewerIds[index]
+              );
+
+            return unchanged ? currentViewerIds : nextViewerIds;
+          });
+        } catch {
+          // Voice state can disappear while the card is unmounting.
+        }
+      };
+
+      void refreshViewers();
+
+      const timer = window.setInterval(
+        refreshViewers,
+        VIEWERS_REFRESH_INTERVAL_MS
+      );
+
+      return () => {
+        disposed = true;
+        window.clearInterval(timer);
+      };
+    }, [hasScreenShareStream, isOwnUser, ownUserId]);
 
     const { transportStats, getConsumerCodec } = useVoice();
 
@@ -211,6 +329,10 @@ const ScreenShareCard = memo(
         }}
       >
         <CardGradient />
+
+        {isOwnUser && screenViewerIds.length > 0 && (
+          <ScreenShareViewers viewerIds={screenViewerIds} />
+        )}
 
         <ScreenShareControls
           isPinned={isPinned}

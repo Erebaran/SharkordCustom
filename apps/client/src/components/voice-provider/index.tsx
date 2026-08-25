@@ -885,7 +885,18 @@ const VoiceProvider = memo(({ children }: TVoiceProviderProps) => {
       if (videoTrack) {
         logVoice('Obtained video track', { videoTrack });
 
-        videoTrack.contentHint = 'detail';
+        const requestedScreenFramerate = Math.max(
+          1,
+          Number(devices?.screenFramerate) || 30
+        );
+
+        videoTrack.contentHint =
+          requestedScreenFramerate >= 45 ? 'motion' : 'detail';
+
+        logVoice('Screen share content hint selected', {
+          contentHint: videoTrack.contentHint,
+          requestedFramerate: requestedScreenFramerate
+        });
 
         let preferredCodec: RtpCodecCapability | undefined;
 
@@ -943,7 +954,8 @@ const VoiceProvider = memo(({ children }: TVoiceProviderProps) => {
 
         if (simulcastCodec) {
           const encodings = getScreenShareSimulcastEncodings(
-            maxBitrateKbps * 1000
+            maxBitrateKbps * 1000,
+            requestedScreenFramerate
           );
           const qualityLayers = getSimulcastQualityLayers(encodings);
 

@@ -2,7 +2,6 @@ import { useCurrentVoiceChannelId } from '@/features/server/channels/hooks';
 import { useChannelCan } from '@/features/server/hooks';
 import { leaveVoice } from '@/features/server/voice/actions';
 import { useVoice } from '@/features/server/voice/hooks';
-import { canSwitchScreenShareSource, switchScreenShareSource } from '@/helpers/screen-share-switch';
 import { cn } from '@/lib/utils';
 import { ChannelPermission } from '@sharkord/shared';
 import { Button } from '@sharkord/ui';
@@ -10,9 +9,8 @@ import {
   AlertTriangle,
   Loader2,
   Monitor,
-  ScreenShareOff,
+  MonitorOff,
   PhoneOff,
-  RefreshCw,
   Video,
   VideoOff,
   Wifi,
@@ -118,21 +116,6 @@ const VoiceControl = memo(() => {
                 <VideoOff className="h-4 w-4" />
               )}
             </Button>
-            {isScreenShareSupported &&
-              ownVoiceState.sharingScreen &&
-              canSwitchScreenShareSource() && (
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 rounded-md bg-secondary text-muted-foreground transition-all duration-200 hover:bg-secondary/80 hover:text-foreground"
-                  onClick={() => void switchScreenShareSource()}
-                  title="Switch Screen"
-                  aria-label="Switch Screen"
-                >
-                  <RefreshCw className="h-4 w-4" />
-                </Button>
-              )}
-
 
             {isScreenShareSupported && (
               <Button
@@ -153,9 +136,9 @@ const VoiceControl = memo(() => {
                 disabled={!channelCan(ChannelPermission.SHARE_SCREEN)}
               >
                 {ownVoiceState.sharingScreen ? (
-                  <ScreenShareOff className="h-4 w-4" />
-                ) : (
                   <Monitor className="h-4 w-4" />
+                ) : (
+                  <MonitorOff className="h-4 w-4" />
                 )}
               </Button>
             )}

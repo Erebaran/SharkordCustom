@@ -1,6 +1,7 @@
 import { Permission, ServerEvents, StreamKind } from '@sharkord/shared';
 import { z } from 'zod';
 import { VoiceRuntime } from '../../runtimes/voice';
+import { addScreenViewer, removeScreenViewer } from './screen-viewers';
 import { invariant } from '../../utils/invariant';
 import { protectedProcedure } from '../../utils/trpc';
 
@@ -59,6 +60,21 @@ const consumeRoute = protectedProcedure
     });
 
     runtime.addConsumer(ctx.user.id, input.remoteId, input.kind, consumer);
+
+    if (input.kind === StreamKind.SCREEN && input.remoteId !== ctx.user.id) {
+      const channelId = ctx.currentVoiceChannelId;
+      const viewerId = ctx.user.id;
+
+      addScreenViewer(channelId, input.remoteId, viewerId, consumer.id);
+
+      const removeViewer = () => {
+        removeScreenViewer(channelId, input.remoteId, viewerId, consumer.id);
+      };
+
+      consumer.on('transportclose', removeViewer);
+      consumer.on('producerclose', removeViewer);
+      consumer.observer.on('close', removeViewer);
+    }
 
     consumer.on('producerclose', () => {
       if (!ctx.currentVoiceChannelId) return;

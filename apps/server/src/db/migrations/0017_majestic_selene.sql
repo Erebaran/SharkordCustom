@@ -1,0 +1,1 @@
+ALTER TABLE `settings` ADD `banner_id` integer REFERENCES files(id);

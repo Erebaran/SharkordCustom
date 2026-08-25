@@ -1,6 +1,7 @@
 import { useChannelCan } from '@/features/server/hooks';
 import { leaveVoice } from '@/features/server/voice/actions';
 import { useOwnVoiceState, useVoice } from '@/features/server/voice/hooks';
+import { canSwitchScreenShareSource, switchScreenShareSource } from '@/helpers/screen-share-switch';
 import { cn } from '@/lib/utils';
 import { ChannelPermission } from '@sharkord/shared';
 import { Button, Tooltip } from '@sharkord/ui';
@@ -9,6 +10,7 @@ import {
   MicOff,
   Monitor,
   PhoneOff,
+  RefreshCw,
   ScreenShareOff,
   Video,
   VideoOff
@@ -73,6 +75,22 @@ const ControlsBar = memo(({ channelId }: TControlsBarProps) => {
           onClick={toggleWebcam}
           disabled={!permissions.canWebcam}
         />
+        {isScreenShareSupported &&
+          ownVoiceState.sharingScreen &&
+          canSwitchScreenShareSource() && (
+            <Tooltip content="Switch Screen">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="pointer-events-auto h-14 w-14 rounded-md bg-secondary text-muted-foreground shadow-xl transition-all hover:bg-secondary/80 hover:text-foreground active:scale-95"
+                onClick={() => void switchScreenShareSource()}
+                aria-label="Switch Screen"
+              >
+                <RefreshCw size={24} />
+              </Button>
+            </Tooltip>
+          )}
+
 
         {isScreenShareSupported && (
           <ControlToggleButton

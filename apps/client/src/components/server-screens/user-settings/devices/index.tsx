@@ -127,7 +127,7 @@ const Devices = memo(() => {
     saveDevices(values);
     toast.success(t('deviceSettingsSaved'));
   }, [saveDevices, values, t]);
-  const didPrimeDevicesOnGrantedRef = useRef(false);
+const didPrimeDevicesOnGrantedRef = useRef(false);
   const mutedByTestRef = useRef<{
     previousMicMuted: boolean;
     previousSoundMuted: boolean;

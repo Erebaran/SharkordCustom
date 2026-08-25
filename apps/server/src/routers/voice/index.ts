@@ -5,6 +5,7 @@ import { connectProducerTransportRoute } from './connect-producer-transport';
 import { consumeRoute } from './consume';
 import { createConsumerTransportRoute } from './create-consumer-transport';
 import { createProducerTransportRoute } from './create-producer-transport';
+import { disconnectVoiceUserRoute } from './disconnect-user';
 import {
   onUserJoinVoiceRoute,
   onUserLeaveVoiceRoute,
@@ -15,16 +16,23 @@ import {
   onVoiceRemoveExternalStreamRoute,
   onVoiceUpdateExternalStreamRoute
 } from './events';
+import { getAdminStateRoute } from './get-admin-state';
 import { getProducersRoute } from './get-producers';
 import { joinVoiceRoute } from './join';
 import { leaveVoiceRoute } from './leave';
 import { produceRoute } from './produce';
 import { setConsumerQualityRoute } from './set-consumer-quality';
+import { setServerDeafenRoute } from './set-server-deafen';
+import { setServerMuteRoute } from './set-server-mute';
 import { updateVoiceStateRoute } from './update-state';
 
 export const voiceRouter = t.router({
   join: joinVoiceRoute,
   leave: leaveVoiceRoute,
+  disconnectUser: disconnectVoiceUserRoute,
+  getAdminState: getAdminStateRoute,
+  setServerMute: setServerMuteRoute,
+  setServerDeafen: setServerDeafenRoute,
   updateState: updateVoiceStateRoute,
   createProducerTransport: createProducerTransportRoute,
   connectProducerTransport: connectProducerTransportRoute,

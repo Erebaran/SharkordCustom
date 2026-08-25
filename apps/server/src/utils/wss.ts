@@ -80,7 +80,7 @@ const createContext = async ({
 
     const hasOwnerRole = roles.some((r) => r.id === OWNER_ROLE_ID);
 
-    if (hasOwnerRole) return true; // owner always has all permissions
+    if (hasOwnerRole) return true;
 
     const permissionsSet = new Set<Permission>();
 
@@ -132,7 +132,7 @@ const createContext = async ({
 
     const hasOwnerRole = roles.some((r) => r.id === OWNER_ROLE_ID);
 
-    if (hasOwnerRole) return true; // owner always has all permissions
+    if (hasOwnerRole) return true;
 
     const userChannelPermissions = await getAllChannelUserPermissions(
       decodedUser.id
@@ -206,7 +206,6 @@ const createContext = async ({
   };
 
   const throwValidationError = (field: string, message: string) => {
-    // this mimics the zod validation error format
     throw new TRPCError({
       code: 'BAD_REQUEST',
       message: JSON.stringify([
@@ -272,12 +271,22 @@ const createWsServer = async (server: http.Server) => {
           try {
             const userId = ws.userId;
 
-            // ignore connections that never authenticated through joinServer
+            // Ignore connections that never authenticated through joinServer.
             if (!userId) {
               return;
             }
 
-            // only mark as offline when there are no other active sessions
+            /*
+             * Sharkord may keep multiple WebSocket connections open for the
+             * same user. When the app closes, those sockets can close almost
+             * simultaneously. If we check immediately, one closing socket may
+             * still see another as OPEN and skip cleanup forever.
+             *
+             * Give the remaining sockets a brief moment to finish closing,
+             * then decide whether this was really the user's last session.
+             */
+            await new Promise((resolve) => setTimeout(resolve, 250));
+
             const hasOtherSessions = Array.from(wss?.clients ?? []).some(
               (client) =>
                 client !== ws &&
@@ -291,20 +300,36 @@ const createWsServer = async (server: http.Server) => {
 
             const user = await getUserById(userId);
 
-            if (!user) return;
+            if (!user) {
+              return;
+            }
 
+            /*
+             * Clean up any voice state still associated with this user.
+             * This covers abrupt app closes where the normal leaveVoice
+             * mutation never had a chance to run.
+             */
             const voiceRuntime = VoiceRuntime.findRuntimeByUserId(user.id);
 
             if (voiceRuntime) {
+              const channelId = voiceRuntime.id;
+
               voiceRuntime.removeUser(user.id);
 
               pubsub.publish(ServerEvents.USER_LEAVE_VOICE, {
-                channelId: voiceRuntime.id,
+                channelId,
                 userId: user.id
               });
+
+              logger.info(
+                '%s automatically left voice channel %s after disconnect',
+                user.name,
+                channelId
+              );
             }
 
             usersIpMap.delete(user.id);
+
             pubsub.publish(ServerEvents.USER_LEAVE, user.id);
 
             logger.info('%s left the server', user.name);

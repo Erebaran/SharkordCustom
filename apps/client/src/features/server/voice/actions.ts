@@ -217,6 +217,20 @@ export const leaveVoice = async (options?: {
   }
 };
 
+
+export const disconnectVoiceUser = async (userId: number): Promise<void> => {
+  const client = getTRPCClient();
+
+  try {
+    await client.voice.disconnectUser.mutate({ userId });
+    toast.success('Usuário desconectado da chamada');
+  } catch (error) {
+    toast.error(
+      getTrpcError(error, 'Não foi possível desconectar o usuário da chamada')
+    );
+  }
+};
+
 export const setPinnedCard = (pinnedCard: TPinnedCard | undefined): void => {
   store.dispatch(serverSliceActions.setPinnedCard(pinnedCard));
 };

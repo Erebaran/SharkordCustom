@@ -1,10 +1,15 @@
 import type { TJoinedSettings, TPublicServerSettings } from '@sharkord/shared';
+
 import { eq } from 'drizzle-orm';
+
 import { db } from '..';
+
 import { config } from '../../config';
+
 import { files, settings } from '../schema';
 
-// since this is static, we can keep it in memory to avoid querying the DB every time
+// since this is static, we can keep it in memory
+// to avoid querying the DB every time
 let token: string;
 
 const getSettings = async (): Promise<TJoinedSettings> => {
@@ -20,6 +25,10 @@ const getSettings = async (): Promise<TJoinedSettings> => {
     token = serverSettings.secretToken;
   }
 
+  // ========================================================
+  // SERVER LOGO
+  // ========================================================
+
   const logo = serverSettings.logoId
     ? await db
         .select()
@@ -28,9 +37,24 @@ const getSettings = async (): Promise<TJoinedSettings> => {
         .get()
     : undefined;
 
+  // ========================================================
+  // SERVER BANNER
+  // ========================================================
+
+  const banner = serverSettings.bannerId
+    ? await db
+        .select()
+        .from(files)
+        .where(eq(files.id, serverSettings.bannerId))
+        .get()
+    : undefined;
+
   return {
     ...serverSettings,
-    logo: logo ?? null
+
+    logo: logo ?? null,
+
+    banner: banner ?? null
   };
 };
 
@@ -39,24 +63,58 @@ const getPublicSettings: () => Promise<TPublicServerSettings> = async () => {
 
   const publicSettings: TPublicServerSettings = {
     description: settings.description ?? '',
+
     name: settings.name,
+
     serverId: settings.serverId,
+
+    // ====================================================
+    // SERVER BRANDING
+    // ====================================================
+
+    logo: settings.logo,
+
+    banner: settings.banner,
+
+    // ====================================================
+    // STORAGE
+    // ====================================================
+
     storageUploadEnabled: settings.storageUploadEnabled,
+
     directMessagesEnabled: settings.directMessagesEnabled,
+
     storageQuota: settings.storageQuota,
+
     storageUploadMaxFileSize: settings.storageUploadMaxFileSize,
+
     storageFileSharingInDirectMessages:
       settings.storageFileSharingInDirectMessages,
+
     storageMaxAvatarSize: settings.storageMaxAvatarSize,
+
     storageMaxBannerSize: settings.storageMaxBannerSize,
+
     storageMaxFilesPerMessage: settings.storageMaxFilesPerMessage,
+
     storageSpaceQuotaByUser: settings.storageSpaceQuotaByUser,
+
     storageOverflowAction: settings.storageOverflowAction,
+
+    // ====================================================
+    // SERVER FEATURES
+    // ====================================================
+
     enablePlugins: settings.enablePlugins,
+
     webRtcSimulcastEnabled: settings.webRtcSimulcastEnabled,
+
     webRtcMaxBitrate: config.webRtc.maxBitrate,
+
     enableSearch: settings.enableSearch,
+
     showWelcomeDialog: settings.showWelcomeDialog,
+
     storageSignedUrlsEnabled: settings.storageSignedUrlsEnabled
   };
 
@@ -72,7 +130,9 @@ const getServerTokenSync = (): string => {
 };
 
 const getServerToken = async (): Promise<string> => {
-  if (token) return token;
+  if (token) {
+    return token;
+  }
 
   const { secretToken } = await getSettings();
 

@@ -146,6 +146,8 @@ class VoiceRuntime {
   private screenAudioProducers: TProducerMap = {};
   private consumers: TConsumerMap = {};
   private producerQualityLayers: TProducerQualityLayerMap = {};
+  private serverMutedUsers = new Set<number>();
+  private serverDeafenedUsers = new Set<number>();
 
   private externalCounter = 0;
   private externalStreamsInternal: {
@@ -380,6 +382,78 @@ class VoiceRuntime {
     return user?.state ?? defaultUserState;
   };
 
+  public isServerMuted = (userId: number): boolean => {
+    return this.serverMutedUsers.has(userId);
+  };
+
+  public isServerDeafened = (userId: number): boolean => {
+    return this.serverDeafenedUsers.has(userId);
+  };
+
+  public setServerMute = async (
+    userId: number,
+    muted: boolean
+  ): Promise<void> => {
+    const user = this.getUser(userId);
+
+    if (!user) {
+      throw new Error('User is not in this voice runtime');
+    }
+
+    if (muted) {
+      this.serverMutedUsers.add(userId);
+    } else {
+      this.serverMutedUsers.delete(userId);
+    }
+
+    const producer = this.getProducer(StreamKind.AUDIO, userId);
+
+    if (!producer || producer.closed) return;
+
+    if (muted) {
+      if (!producer.paused) {
+        await producer.pause();
+      }
+    } else if (producer.paused) {
+      await producer.resume();
+    }
+  };
+
+  public setServerDeafen = async (
+    userId: number,
+    deafened: boolean
+  ): Promise<void> => {
+    const user = this.getUser(userId);
+
+    if (!user) {
+      throw new Error('User is not in this voice runtime');
+    }
+
+    if (deafened) {
+      this.serverDeafenedUsers.add(userId);
+    } else {
+      this.serverDeafenedUsers.delete(userId);
+    }
+
+    const userConsumers = this.consumers[userId];
+
+    if (!userConsumers) return;
+
+    await Promise.all(
+      Object.values(userConsumers).map(async (consumer) => {
+        if (consumer.closed || consumer.kind !== 'audio') return;
+
+        if (deafened) {
+          if (!consumer.paused) {
+            await consumer.pause();
+          }
+        } else if (consumer.paused) {
+          await consumer.resume();
+        }
+      })
+    );
+  };
+
   public addUser = (
     userId: number,
     state: Pick<TVoiceUserState, 'micMuted' | 'soundMuted'>
@@ -402,6 +476,9 @@ class VoiceRuntime {
 
   public removeUser = (userId: number) => {
     this.state.users = this.state.users.filter((u) => u.userId !== userId);
+
+    this.serverMutedUsers.delete(userId);
+    this.serverDeafenedUsers.delete(userId);
 
     this.cleanupUserResources(userId);
 
@@ -640,6 +717,21 @@ class VoiceRuntime {
 
       this.setProducerQualityLayers(userId, type, []);
     });
+
+    if (
+      type === StreamKind.AUDIO &&
+      this.serverMutedUsers.has(userId) &&
+      !producer.closed &&
+      !producer.paused
+    ) {
+      void producer.pause().catch((error) => {
+        logger.error(
+          'Failed to apply server mute to new audio producer for user %s: %o',
+          userId,
+          error
+        );
+      });
+    }
   };
 
   public removeProducer(userId: number, type: StreamKind) {
@@ -698,6 +790,21 @@ class VoiceRuntime {
     const streamKey = this.getConsumerKey(remoteId, kind);
 
     this.consumers[userId][streamKey] = consumer;
+
+    if (
+      this.serverDeafenedUsers.has(userId) &&
+      consumer.kind === 'audio' &&
+      !consumer.closed &&
+      !consumer.paused
+    ) {
+      void consumer.pause().catch((error) => {
+        logger.error(
+          'Failed to apply server deafen to new audio consumer for user %s: %o',
+          userId,
+          error
+        );
+      });
+    }
 
     consumer.observer.on('close', () => {
       delete this.consumers[userId]?.[streamKey];

@@ -1,61 +1,44 @@
+import '@/helpers/chrome-color';
+
 import {
-  useCurrentVoiceChannelId,
-  useIsCurrentVoiceChannelSelected
-} from '@/features/server/channels/hooks';
-import { usePublicServerSettings } from '@/features/server/hooks';
-import { PluginSlot } from '@sharkord/shared';
-import { Button, Tooltip } from '@sharkord/ui';
-import { PanelRight, PanelRightClose } from 'lucide-react';
-import { memo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { PluginSlotRenderer } from '../plugin-slot-renderer';
-import { ServerSearch } from './server-search';
-import { VoiceButtons } from './voice-buttons';
+  usePublicServerSettings,
+  useServerName
+} from '@/features/server/hooks';
+import { getFileUrl } from '@/helpers/get-file-url';
+import { memo, type CSSProperties } from 'react';
 
-type TTopBarProps = {
-  onToggleRightSidebar: () => void;
-  isOpen: boolean;
-};
+const topBarStyle = {
+  WebkitAppRegion: 'drag',
+  backgroundColor: 'var(--sharkord-chrome-color, hsl(var(--card)))'
+} as CSSProperties;
 
-const TopBar = memo(({ onToggleRightSidebar, isOpen }: TTopBarProps) => {
-  const { t } = useTranslation('topbar');
-  const isCurrentVoiceChannelSelected = useIsCurrentVoiceChannelSelected();
-  const currentVoiceChannelId = useCurrentVoiceChannelId();
-  const settings = usePublicServerSettings();
+const TopBar = memo(() => {
+  const publicSettings = usePublicServerSettings();
+  const serverName = useServerName();
+  const logoUrl = getFileUrl(publicSettings?.logo);
 
   return (
-    <div className="hidden lg:grid h-12 w-full grid-cols-[1fr_minmax(320px,1.4fr)_1fr] items-center border-b border-border bg-card px-4 transition-all duration-300 ease-in-out gap-2">
-      <div className="flex min-w-0 items-center gap-2" />
-
-      <div className="flex items-center justify-center">
-        {settings?.enableSearch && <ServerSearch />}
-      </div>
-
-      <div className="flex min-w-0 items-center justify-end gap-2">
-        <PluginSlotRenderer slotId={PluginSlot.TOPBAR_RIGHT} />
-        {isCurrentVoiceChannelSelected && currentVoiceChannelId && (
-          <VoiceButtons currentVoiceChannelId={currentVoiceChannelId} />
+    <div
+      className="relative flex h-8 w-full shrink-0 items-center justify-center overflow-hidden"
+      style={topBarStyle}
+    >
+      <div className="pointer-events-none absolute left-1/2 flex max-w-[70%] -translate-x-1/2 items-center gap-1.5 sm:max-w-[60%] sm:gap-2 lg:max-w-[50%]">
+        {logoUrl ? (
+          <img
+            src={logoUrl}
+            alt=""
+            className="h-5 w-5 shrink-0 rounded object-cover sm:h-6 sm:w-6 sm:rounded-md"
+            draggable={false}
+          />
+        ) : (
+          <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded bg-white/10 text-[10px] font-bold text-foreground/80 sm:h-6 sm:w-6 sm:rounded-md sm:text-[11px]">
+            {serverName?.trim()?.charAt(0)?.toUpperCase() || '?'}
+          </div>
         )}
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={onToggleRightSidebar}
-          className="h-7 px-2 transition-all duration-200 ease-in-out"
-        >
-          {isOpen ? (
-            <Tooltip content={t('closeMembersSidebar')}>
-              <div>
-                <PanelRightClose className="w-4 h-4 transition-transform duration-200 ease-in-out" />
-              </div>
-            </Tooltip>
-          ) : (
-            <Tooltip content={t('openMembersSidebar')}>
-              <div>
-                <PanelRight className="w-4 h-4 transition-transform duration-200 ease-in-out" />
-              </div>
-            </Tooltip>
-          )}
-        </Button>
+
+        <span className="min-w-0 truncate text-xs font-semibold text-foreground sm:text-sm">
+          {serverName}
+        </span>
       </div>
     </div>
   );

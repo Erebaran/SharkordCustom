@@ -21,7 +21,9 @@ const UserControl = memo(() => {
   const channelCan = useChannelCan(currentVoiceChannelId);
 
   const handleSettingsClick = useCallback(() => {
+    console.log('[UserSettings] click');
     openServerScreen(ServerScreen.USER_SETTINGS);
+    console.log('[UserSettings] dispatched');
   }, []);
 
   if (!ownPublicUser) return null;

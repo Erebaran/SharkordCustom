@@ -111,7 +111,9 @@ const getOrphanedFileIds = async (): Promise<number[]> => {
       SELECT 1 FROM message_reactions mr WHERE mr.file_id = f.id
     )
     AND NOT EXISTS (
-      SELECT 1 FROM settings s WHERE s.logo_id = f.id
+      SELECT 1
+      FROM settings s
+      WHERE s.logo_id = f.id OR s.banner_id = f.id
     )
   `);
 
@@ -120,13 +122,35 @@ const getOrphanedFileIds = async (): Promise<number[]> => {
 
 const isFileOrphaned = async (fileId: number): Promise<boolean> => {
   const result = await db.get(sql`
-    SELECT 
-      CASE 
-        WHEN NOT EXISTS (SELECT 1 FROM message_files mf WHERE mf.file_id = ${fileId})
-        AND NOT EXISTS (SELECT 1 FROM users u WHERE u.avatar_id = ${fileId} OR u.banner_id = ${fileId})
-        AND NOT EXISTS (SELECT 1 FROM emojis e WHERE e.file_id = ${fileId})
-        AND NOT EXISTS (SELECT 1 FROM message_reactions mr WHERE mr.file_id = ${fileId})
-        AND NOT EXISTS (SELECT 1 FROM settings s WHERE s.logo_id = ${fileId})
+    SELECT
+      CASE
+        WHEN NOT EXISTS (
+          SELECT 1
+          FROM message_files mf
+          WHERE mf.file_id = ${fileId}
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM users u
+          WHERE u.avatar_id = ${fileId}
+             OR u.banner_id = ${fileId}
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM emojis e
+          WHERE e.file_id = ${fileId}
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM message_reactions mr
+          WHERE mr.file_id = ${fileId}
+        )
+        AND NOT EXISTS (
+          SELECT 1
+          FROM settings s
+          WHERE s.logo_id = ${fileId}
+             OR s.banner_id = ${fileId}
+        )
         THEN 1
         ELSE 0
       END as isOrphaned
