@@ -130,10 +130,8 @@ const ServerRail = memo(() => {
 
   return (
     <>
-      <aside className="hidden h-full w-[72px] shrink-0 flex-col items-center pt-6 md:flex"
-        style={{
-          background: 'var(--sharkord-chrome-background, hsl(var(--card)))'
-        }}
+      <aside className="hidden h-full w-[72px] shrink-0 flex-col items-center pt-6 md:flex "
+        style={{background: 'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))',}}
       >
 
         <button
@@ -219,7 +217,7 @@ const ServerRail = memo(() => {
 
       {isAddOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4">
-          <div className="w-full max-w-md rounded-xl border border-border bg-card p-5 shadow-2xl">
+          <div className="w-full max-w-md rounded-xl border bg-card p-5 shadow-2xl">
             <h2 className="text-lg font-semibold text-foreground">
               Adicionar servidor
             </h2>
@@ -240,7 +238,7 @@ const ServerRail = memo(() => {
                 }
               }}
               placeholder="https://sharkord.exemplo.com"
-              className="mt-4 h-10 w-full rounded-md border border-border bg-background px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary"
+              className="mt-4 h-10 w-full rounded-md border bg-background px-3 text-sm text-foreground outline-none focus:ring-2 focus:ring-primary"
             />
 
             {error && (

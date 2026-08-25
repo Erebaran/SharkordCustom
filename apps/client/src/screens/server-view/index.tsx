@@ -1,3 +1,4 @@
+import '@/helpers/chrome-color';
 import { BannerControls } from '@/components/banner-controls';
 import { LeftSidebar } from '@/components/left-sidebar';
 import { ModViewSheet } from '@/components/mod-view-sheet';
@@ -90,15 +91,31 @@ const ServerView = memo(() => {
       >
         <TopBar />
 
-        <div className="relative flex min-h-0 flex-1 overflow-hidden">
+        <div
+          className="relative flex min-h-0 flex-1 overflow-hidden"
+          style={{
+            background:
+              'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+          }}
+        >
           <PreventBrowser />
 
           <ServerRail />
 
-          <div className="flex min-w-0 flex-1 flex-col">
+          <div
+            className="flex min-w-0 flex-1 flex-col bg-background overflow-hidden border-l border-t border-border"
+          >
             {!dmsOpen && (
               <div className="relative shrink-0">
-                <ServerHero />
+                <div
+              data-sharkord-hero-chrome-corner
+              style={{
+                background:
+                  'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+              }}
+            >
+              <ServerHero />
+            </div>
 
                 <BannerControls
                   onToggleRightSidebar={handleDesktopRightSidebarToggle}

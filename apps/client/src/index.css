@@ -430,3 +430,46 @@ body {
   width: 100% !important;
   max-width: 100% !important;
 }
+
+/* SHARKORD DISCORD-LIKE SEPARATORS V2.0.0 */
+:root {
+  --sharkord-divider-color: rgba(255, 255, 255, 0.13);
+}
+
+/*
+ * Clareia somente bordas usadas como divisorias estruturais.
+ * Nao mexe em bordas completas de cards, inputs e botoes.
+ */
+.border-t.border-border,
+.border-b.border-border,
+.border-l.border-border,
+.border-r.border-border {
+  border-color: var(--sharkord-divider-color) !important;
+}
+
+/*
+ * Separators do tipo linha de 1px que usam bg-border.
+ */
+.h-px.bg-border,
+.w-px.bg-border {
+  background-color: var(--sharkord-divider-color) !important;
+}
+
+/*
+ * Variantes com transparencia usadas em algumas barras.
+ */
+.border-t.border-border\/50,
+.border-b.border-border\/50,
+.border-l.border-border\/50,
+.border-r.border-border\/50,
+.border-t.border-border\/60,
+.border-b.border-border\/60,
+.border-l.border-border\/60,
+.border-r.border-border\/60,
+.border-t.border-border\/70,
+.border-b.border-border\/70,
+.border-l.border-border\/70,
+.border-r.border-border\/70 {
+  border-color: var(--sharkord-divider-color) !important;
+}
+/* END SHARKORD DISCORD-LIKE SEPARATORS V2.0.0 */

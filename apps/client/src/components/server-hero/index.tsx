@@ -7,13 +7,13 @@ const ServerHero = memo(() => {
   const bannerUrl = getFileUrl(publicSettings?.banner);
 
   return (
-    <div className="relative h-44 w-full shrink-0 border-b border-border bg-card overflow-hidden rounded-tl-lg">
+    <div className="relative h-44 w-full shrink-0 border-b border-border bg-card overflow-hidden">
       <div className="absolute inset-0 overflow-hidden">
         {bannerUrl ? (
           <img
             src={bannerUrl}
             alt=""
-            className="h-full w-full object-cover object-center"
+            className="h-full w-full object-cover object-center block"
             draggable={false}
           />
         ) : (

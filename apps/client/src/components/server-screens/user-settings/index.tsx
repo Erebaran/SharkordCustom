@@ -47,7 +47,7 @@ const UserSettings = memo(({ close }: TUserSettingsProps) => {
   const ownPublicUser = useOwnPublicUser();
 
   return (
-    <div className="fixed inset-x-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] xl:p-5">
+    <div data-sharkord-settings-overlay className="left-0 right-0 md:left-[72px] fixed inset-y-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] md:left-[72px] xl:p-5">
       <style>{`
         [data-radix-popper-content-wrapper] {
           z-index: 1100 !important;
@@ -60,7 +60,7 @@ const UserSettings = memo(({ close }: TUserSettingsProps) => {
         }
       `}</style>
       <div
-        className="flex h-full w-full overflow-hidden bg-background text-foreground shadow-2xl xl:h-[min(860px,calc(100vh-72px))] xl:w-[min(1180px,calc(100vw-40px))] xl:rounded-xl xl:border xl:border-border/70"
+        className="flex h-full w-full overflow-hidden bg-background text-foreground shadow-2xl xl:h-[min(860px,calc(100vh-72px))] xl:w-[min(1180px,calc(100vw-40px))] xl:border xl:border-border/70 xl:rounded-xl"
         role="dialog"
         aria-modal="true"
         aria-label={t('userSettingsTitle')}

@@ -90,9 +90,9 @@ const Others = memo(() => {
 
       <Card>
         <CardHeader>
-          <CardTitle>AparÃªncia do aplicativo</CardTitle>
+          <CardTitle>Aparência do aplicativo</CardTitle>
           <CardDescription>
-            Personalize a barra superior e o dock de servidores com cor sÃ³lida
+            Personalize a barra superior e o dock de servidores com cor sólida
             ou gradiente.
           </CardDescription>
         </CardHeader>
@@ -110,7 +110,7 @@ const Others = memo(() => {
 
           <Group
             label={gradientEnabled ? 'Primeira cor' : 'Cor da barra superior e do dock'}
-            description="A alteraÃ§Ã£o Ã© aplicada imediatamente e fica salva neste dispositivo."
+            description="A alteração é aplicada imediatamente e fica salva neste dispositivo."
           >
             <div className="flex items-center gap-3">
               <input
@@ -153,7 +153,7 @@ const Others = memo(() => {
           <div
             className="h-12 w-full rounded-lg border border-border"
             style={{ background: previewBackground }}
-            aria-label="PrÃ©via da aparÃªncia"
+            aria-label="Prévia da aparência"
           />
 
           <div className="flex justify-end">
@@ -162,7 +162,7 @@ const Others = memo(() => {
               size="sm"
               onClick={handleResetChromeColor}
             >
-              Restaurar padrÃ£o
+              Restaurar padrão
             </Button>
           </div>
         </CardContent>

@@ -9,7 +9,12 @@ import { memo, type CSSProperties } from 'react';
 
 const topBarStyle = {
   WebkitAppRegion: 'drag',
-  backgroundColor: 'var(--sharkord-chrome-color, hsl(var(--card)))'
+  background: 'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+} as CSSProperties;
+
+const sharkordTopBarStyle = {
+  WebkitAppRegion: 'drag',
+  background: 'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
 } as CSSProperties;
 
 const TopBar = memo(() => {
@@ -18,9 +23,7 @@ const TopBar = memo(() => {
   const logoUrl = getFileUrl(publicSettings?.logo);
 
   return (
-    <div
-      className="relative flex h-8 w-full shrink-0 items-center justify-center overflow-hidden"
-      style={topBarStyle}
+    <div className="relative flex h-8 w-full shrink-0 items-center justify-center overflow-hidden " style={sharkordTopBarStyle}
     >
       <div className="pointer-events-none absolute left-1/2 flex max-w-[70%] -translate-x-1/2 items-center gap-1.5 sm:max-w-[60%] sm:gap-2 lg:max-w-[50%]">
         {logoUrl ? (

@@ -3,6 +3,7 @@ const SECOND_COLOR_STORAGE_KEY = 'sharkord:chrome-gradient-color-2';
 const GRADIENT_ENABLED_STORAGE_KEY = 'sharkord:chrome-gradient-enabled';
 
 const CSS_VARIABLE = '--sharkord-chrome-background';
+const LEGACY_CSS_VARIABLE = '--sharkord-chrome-color';
 
 const DEFAULT_COLOR = '#18181b';
 const DEFAULT_SECOND_COLOR = '#27272a';
@@ -32,7 +33,12 @@ const applySharkordChromeAppearance = () => {
     ? `linear-gradient(135deg, ${first} 0%, ${second} 100%)`
     : first;
 
+  // Variavel canonica: aceita cor solida ou gradiente.
   document.documentElement.style.setProperty(CSS_VARIABLE, background);
+
+  // Compatibilidade com componentes antigos/fixos de Settings que ainda
+  // usam --sharkord-chrome-color.
+  document.documentElement.style.setProperty(LEGACY_CSS_VARIABLE, first);
 };
 
 const setSharkordChromeColor = (value: string) => {
