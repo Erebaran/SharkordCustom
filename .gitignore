@@ -1,7 +1,13 @@
-/node_modules
-/.github/copilot-instructions.md
-/cenas.txt
-/cenas.md
-/DockerCenas
-/experiments
-.direnv/
+.idea/
+Sharkord Sever/
+
+_layout-backup-*/
+_user-settings-diag-*/
+_user-settings-diag-v3-*/
+_user-settings-diag-v4-*/
+_user-settings-minimal-*/
+_user-settings-tabs-test-*/
+
+apps/server/.bun-cache/
+
+corrigir-icone-screen-share_V3.ps1
