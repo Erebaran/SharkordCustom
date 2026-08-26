@@ -3,7 +3,7 @@ import '@/helpers/chrome-color';
 import { setDmsOpen } from '@/features/server/actions';
 import { setSelectedChannelId } from '@/features/server/channels/actions';
 import { useDmsOpen, usePublicServerSettings } from '@/features/server/hooks';
-import { Plus, Server } from 'lucide-react';
+import { Plus, Server, Trash2 } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
 type TDesktopServer = {
@@ -99,6 +99,37 @@ const ServerRail = memo(() => {
     [state.currentServer]
   );
 
+  const removeServer = useCallback(
+    async (url: string, name?: string) => {
+      const api = getDesktopApi();
+      if (!api || !url || isBusy) return;
+
+      const label = String(name || url).trim() || url;
+      const confirmed = window.confirm(
+        `Remover "${label}" da lista de servidores?`
+      );
+
+      if (!confirmed) return;
+
+      setIsBusy(true);
+      setError('');
+
+      try {
+        await api.remove(url);
+        await refresh();
+      } catch (caughtError) {
+        console.error('[ServerRail] falha removendo servidor:', caughtError);
+        window.alert(
+          caughtError instanceof Error
+            ? caughtError.message
+            : 'Nao foi possivel remover o servidor.'
+        );
+      } finally {
+        setIsBusy(false);
+      }
+    },
+    [isBusy, refresh]
+  );
   const addServer = useCallback(async () => {
     const value = serverUrl.trim();
     const api = getDesktopApi();
@@ -169,19 +200,22 @@ const ServerRail = memo(() => {
                 : server.avatarDataUrl;
 
             return (
-              <button
+              <div
                 key={server.url}
-                type="button"
-                title={`${server.name || server.url}\n${server.url}`}
-                disabled={isBusy}
-                onClick={() => void connect(server.url)}
-                className={[
-                  'relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-muted text-sm font-semibold transition-all',
-                  active
-                    ? 'rounded-full ring-2 ring-foreground'
-                    : 'rounded-full hover:rounded-2xl hover:bg-accent'
-                ].join(' ')}
+                className="group relative h-12 w-12 shrink-0"
               >
+                <button
+                  type="button"
+                  title={`${server.name || server.url}\n${server.url}`}
+                  disabled={isBusy}
+                  onClick={() => void connect(server.url)}
+                  className={[
+                    'relative flex h-12 w-12 shrink-0 items-center justify-center overflow-hidden bg-muted text-sm font-semibold transition-all',
+                    active
+                      ? 'rounded-full ring-2 ring-foreground'
+                      : 'rounded-full hover:rounded-2xl hover:bg-accent'
+                  ].join(' ')}
+                >
                 {active && (
                   <span className="absolute -left-2 h-8 w-1 rounded-r bg-foreground" />
                 )}
@@ -196,7 +230,23 @@ const ServerRail = memo(() => {
                 ) : (
                   <span>{firstLetter(server.name)}</span>
                 )}
-              </button>
+                </button>
+
+                <button
+                  type="button"
+                  title={`Remover ${server.name || server.url}`}
+                  aria-label={`Remover ${server.name || server.url}`}
+                  disabled={isBusy}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    void removeServer(server.url, server.name);
+                  }}
+                  className="absolute -right-1 -top-1 z-20 hidden h-5 w-5 items-center justify-center rounded-full border border-border bg-background text-muted-foreground shadow-md transition hover:bg-destructive hover:text-destructive-foreground disabled:opacity-50 group-hover:flex focus:flex"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </div>
             );
           })}
 
