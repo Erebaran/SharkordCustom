@@ -1,24 +1,24 @@
 # SharkordCustom
 
-Versão customizada do [Sharkord](https://github.com/Sharkord/sharkord), desenvolvida para funcionar em conjunto com o
+A customized version of [Sharkord](https://github.com/Sharkord/sharkord), developed to work alongside
 [Sharkord Desktop](https://github.com/Erebaran/SharkordAPP).
 
-Este projeto é baseado no Sharkord original e contém modificações próprias na interface, gerenciamento de servidores, Direct Messages, compartilhamento de tela e áudio, branding, configurações e integrações específicas com o aplicativo desktop.
+This project is based on the original Sharkord project and includes custom modifications to the interface, server management, Direct Messages, screen and audio sharing, branding, settings, and desktop-specific integrations.
 
-> Este não é o repositório oficial do Sharkord. Trata-se de uma versão modificada baseada no projeto original.
+> This is not the official Sharkord repository. It is a modified version based on the original project.
 
-## Projeto base
+## Base Project
 
-Este projeto utiliza o Sharkord como base.
+This project uses Sharkord as its foundation.
 
-Projeto original:
+Original project:  
 [Sharkord](https://github.com/Sharkord/sharkord)
 
-Todos os créditos pelo projeto base pertencem aos autores e colaboradores originais do Sharkord.
+All credits for the original project belong to the original Sharkord authors and contributors.
 
-## Integração com o Sharkord Desktop
+## Sharkord Desktop Integration
 
-O SharkordCustom foi adaptado para trabalhar em conjunto com o
+SharkordCustom has been adapted to work together with
 [Sharkord Desktop](https://github.com/Erebaran/SharkordAPP).
 
-Algumas funcionalidades presentes nesta versão dependem das modificações feitas neste repositório e podem não funcionar da mesma forma em uma instalação padrão do Sharkord.
+Some features included in this version depend on the modifications made in this repository and may not work the same way with a standard Sharkord installation.
