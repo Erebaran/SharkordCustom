@@ -11,3 +11,4 @@ _user-settings-tabs-test-*/
 apps/server/.bun-cache/
 
 corrigir-icone-screen-share_V3.ps1
+node_modules/
