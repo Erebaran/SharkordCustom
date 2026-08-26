@@ -1,92 +1,24 @@
-<div align="center">
-  <h1>Sharkord</h1>
-  <p><strong>A lightweight, self-hosted real-time communication platform</strong></p>
-  
-  [![Version](https://img.shields.io/github/v/release/Sharkord/sharkord)](https://github.com/Sharkord/sharkord/releases)
-  [![License](https://img.shields.io/github/license/Sharkord/sharkord)](LICENSE)
-  [![Downloads](https://img.shields.io/github/downloads/Sharkord/sharkord/total)](https://github.com/Sharkord/sharkord/releases)
-  [![Last Commit](https://img.shields.io/github/last-commit/Sharkord/sharkord)](https://github.com/Sharkord/sharkord/commits)
-  
-  [![Bun](https://img.shields.io/badge/Bun-v1.3.14-green.svg)](https://bun.sh)
-  [![Mediasoup](https://img.shields.io/badge/Mediasoup-v3.19.19-green.svg)](https://mediasoup.org)
-</div>
+# SharkordCustom
 
-[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/B0B71U3476)
+Versão customizada do [Sharkord](https://github.com/Sharkord/sharkord), desenvolvida para funcionar em conjunto com o
+[Sharkord Desktop](https://github.com/Erebaran/SharkordAPP).
 
-## What is Sharkord?
+Este projeto é baseado no Sharkord original e contém modificações próprias na interface, gerenciamento de servidores, Direct Messages, compartilhamento de tela e áudio, branding, configurações e integrações específicas com o aplicativo desktop.
 
-> [!NOTE]
-> Sharkord is in alpha stage. Bugs, incomplete features and breaking changes are to be expected.
+> Este não é o repositório oficial do Sharkord. Trata-se de uma versão modificada baseada no projeto original.
 
-Sharkord is a self-hosted communication platform that brings the most important Discord-like features to your own infrastructure. Voice, video, and screen sharing without the bloat or surveillance.
+## Projeto base
 
-## Docs
+Este projeto utiliza o Sharkord como base.
 
-For detailed documentation, please visit our [Documentation](https://sharkord.com/docs).
+Projeto original:
+[Sharkord](https://github.com/Sharkord/sharkord)
 
-## Wanna Try It Out?
+Todos os créditos pelo projeto base pertencem aos autores e colaboradores originais do Sharkord.
 
-Check out the Live Demo at [demo.sharkord.com](https://demo.sharkord.com).
+## Integração com o Sharkord Desktop
 
-## Getting Started
+O SharkordCustom foi adaptado para trabalhar em conjunto com o
+[Sharkord Desktop](https://github.com/Erebaran/SharkordAPP).
 
-Sharkord is distributed as a standalone binary that bundles both server and client components. Get started by downloading the latest release for your platform from the [Releases](https://github.com/Sharkord/sharkord/releases) page. We ship binaries for Windows, macOS, and Linux.
-
-#### Linux x64
-
-```bash
-curl -L https://github.com/sharkord/sharkord/releases/latest/download/sharkord-linux-x64 -o sharkord
-chmod +x sharkord
-./sharkord
-```
-
-#### Docker
-
-Sharkord can also be run using Docker. Here's how to run it:
-
-```bash
-docker run \
-  -p 4991:4991/tcp \
-  -p 40000:40000/tcp \
-  -p 40000:40000/udp \
-  -v ./data:/home/bun/.config/sharkord \
-  --name sharkord \
-  sharkord/sharkord:latest
-```
-
-> [!NOTE]
-> Upon first launch, Sharkord will create a secure token and print it to the console. This token allows ANYONE to gain owner access to your server, so make sure to store it securely and do not lose it!
-
-Once the server is running, open your web browser and navigate to [http://localhost:4991](http://localhost:4991) to access the Sharkord client interface. If you're running the server on a different machine, replace `localhost` with the server's IP address or domain name.
-
-Check out our [Documentation](https://sharkord.com/docs) for more detailed setup instructions, configuration options, and troubleshooting tips.
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Acknowledgments
-
-Built with amazing open-source technologies:
-
-- [Bun](https://bun.sh)
-- [tRPC](https://trpc.io)
-- [Mediasoup](https://mediasoup.org)
-- [Drizzle ORM](https://orm.drizzle.team)
-- [React](https://react.dev)
-- [Radix UI](https://www.radix-ui.com)
-- [ShadCN UI](https://ui.shadcn.com/)
-- [Tailwind CSS](https://tailwindcss.com)
-
-<div align="center">
-  <p>Made with ❤️ by the Sharkord team</p>
-  <p>
-    <a href="https://github.com/Sharkord/sharkord">GitHub</a> •
-    <a href="https://github.com/Sharkord/sharkord/issues">Issues</a> •
-    <a href="https://github.com/Sharkord/sharkord/discussions">Discussions</a>
-  </p>
-</div>
+Algumas funcionalidades presentes nesta versão dependem das modificações feitas neste repositório e podem não funcionar da mesma forma em uma instalação padrão do Sharkord.
