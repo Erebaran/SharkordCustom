@@ -7,12 +7,6 @@ import {
 import { getFileUrl } from '@/helpers/get-file-url';
 import { memo, type CSSProperties } from 'react';
 
-const topBarStyle = {
-  WebkitAppRegion: 'drag',
-  background:
-    'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
-} as CSSProperties;
-
 const sharkordTopBarStyle = {
   WebkitAppRegion: 'drag',
   background:

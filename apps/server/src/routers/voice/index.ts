@@ -18,6 +18,7 @@ import {
 } from './events';
 import { getAdminStateRoute } from './get-admin-state';
 import { getProducersRoute } from './get-producers';
+import { getScreenViewersRoute } from './get-screen-viewers';
 import { joinVoiceRoute } from './join';
 import { leaveVoiceRoute } from './leave';
 import { produceRoute } from './produce';
@@ -43,6 +44,7 @@ export const voiceRouter = t.router({
   consume: consumeRoute,
   setConsumerQuality: setConsumerQualityRoute,
   getProducers: getProducersRoute,
+  getScreenViewers: getScreenViewersRoute,
   onJoin: onUserJoinVoiceRoute,
   onLeave: onUserLeaveVoiceRoute,
   onUpdateState: onUserUpdateVoiceStateRoute,

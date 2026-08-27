@@ -59,6 +59,7 @@ function TooltipContent({
 type TTooltipProps = {
   children: React.ReactElement;
   content: React.ReactNode;
+  side?: React.ComponentProps<typeof TooltipPrimitive.Content>['side'];
   sideOffset?: number;
   asChild?: boolean;
 };
@@ -66,13 +67,16 @@ type TTooltipProps = {
 const Tooltip = ({
   children,
   content,
+  side,
   sideOffset = 4,
   asChild = true
 }: TTooltipProps) => (
   <TooltipProvider>
     <TooltipRoot delayDuration={200}>
       <TooltipTrigger asChild={asChild}>{children}</TooltipTrigger>
-      <TooltipContent sideOffset={sideOffset}>{content}</TooltipContent>
+      <TooltipContent side={side} sideOffset={sideOffset}>
+        {content}
+      </TooltipContent>
     </TooltipRoot>
   </TooltipProvider>
 );

@@ -12,7 +12,6 @@ import {
   type TJoinedRole
 } from '@sharkord/shared';
 import { memo, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { UserPopover } from '../user-popover';
 
@@ -158,7 +157,6 @@ type TRightSidebarProps = {
 
 const RightSidebar = memo(
   ({ className, isOpen = true }: TRightSidebarProps) => {
-    const { t } = useTranslation('sidebar');
     const users = useUsers();
 
     const filteredUsers = useMemo(
