@@ -18,8 +18,14 @@ const ScreensMap = {
 
 const portalRoot = document.getElementById('portal')!;
 
-if (!(window as any).__userSettingsDiagInstalled) {
-  (window as any).__userSettingsDiagInstalled = true;
+type TWindowWithUserSettingsDiag = Window & {
+  __userSettingsDiagInstalled?: boolean;
+};
+
+const diagnosticWindow = window as TWindowWithUserSettingsDiag;
+
+if (!diagnosticWindow.__userSettingsDiagInstalled) {
+  diagnosticWindow.__userSettingsDiagInstalled = true;
 
   window.addEventListener('error', (event) => {
     console.error(
