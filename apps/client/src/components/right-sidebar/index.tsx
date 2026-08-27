@@ -2,8 +2,8 @@ import { ResizableSidebar } from '@/components/resizable-sidebar';
 import { ServerSearch } from '@/components/top-bar/server-search';
 import { UserAvatar } from '@/components/user-avatar';
 import { userRolesSelector } from '@/features/server/selectors';
-import type { IRootState } from '@/features/store';
 import { useUserById, useUsers } from '@/features/server/users/hooks';
+import type { IRootState } from '@/features/store';
 import { getFileUrl } from '@/helpers/get-file-url';
 import { LocalStorageKey } from '@/helpers/storage';
 import { cn } from '@/lib/utils';
@@ -12,8 +12,8 @@ import {
   type TJoinedRole
 } from '@sharkord/shared';
 import { memo, useMemo } from 'react';
-import { useSelector } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { UserPopover } from '../user-popover';
 
 const MAX_USERS_TO_SHOW = 100;
@@ -144,12 +144,10 @@ const RoleHeader = memo(({ role, count }: TRoleHeaderProps) => (
     </span>
 
     <span
-      className={cn(
-        'ml-1 opacity-80',
-        !role?.color && 'text-muted-foreground'
-      )}
+      className={cn('ml-1 opacity-80', !role?.color && 'text-muted-foreground')}
     >
-      {' - '}{count}
+      {' - '}
+      {count}
     </span>
   </div>
 ));
@@ -242,7 +240,7 @@ const RightSidebar = memo(
             <ServerSearch />
           </div>
         </div>
-<div className="min-h-0 flex-1 overflow-y-auto p-2">
+        <div className="min-h-0 flex-1 overflow-y-auto p-2">
           <div>
             {roleGroups.map((group) => (
               <div key={group.key}>

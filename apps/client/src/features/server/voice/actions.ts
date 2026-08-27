@@ -217,7 +217,6 @@ export const leaveVoice = async (options?: {
   }
 };
 
-
 export const disconnectVoiceUser = async (userId: number): Promise<void> => {
   const client = getTRPCClient();
 

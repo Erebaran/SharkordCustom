@@ -1,4 +1,3 @@
-import '@/helpers/chrome-color';
 import { BannerControls } from '@/components/banner-controls';
 import { LeftSidebar } from '@/components/left-sidebar';
 import { ModViewSheet } from '@/components/mod-view-sheet';
@@ -14,6 +13,7 @@ import { useSelectedDmChannelId, useThreadSidebar } from '@/features/app/hooks';
 import { setDmsOpen } from '@/features/server/actions';
 import { setSelectedChannelId } from '@/features/server/channels/actions';
 import { useDmsOpen, usePublicServerSettings } from '@/features/server/hooks';
+import '@/helpers/chrome-color';
 import { getLocalStorageItemBool, LocalStorageKey } from '@/helpers/storage';
 import { useSwipeGestures } from '@/hooks/use-swipe-gestures';
 import { cn } from '@/lib/utils';
@@ -102,20 +102,18 @@ const ServerView = memo(() => {
 
           <ServerRail />
 
-          <div
-            className="flex min-w-0 flex-1 flex-col bg-background overflow-hidden border-l border-t border-border"
-          >
+          <div className="flex min-w-0 flex-1 flex-col bg-background overflow-hidden border-l border-t border-border">
             {!dmsOpen && (
               <div className="relative shrink-0">
                 <div
-              data-sharkord-hero-chrome-corner
-              style={{
-                background:
-                  'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
-              }}
-            >
-              <ServerHero />
-            </div>
+                  data-sharkord-hero-chrome-corner
+                  style={{
+                    background:
+                      'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+                  }}
+                >
+                  <ServerHero />
+                </div>
 
                 <BannerControls
                   onToggleRightSidebar={handleDesktopRightSidebarToggle}
@@ -164,7 +162,9 @@ const ServerView = memo(() => {
                     ? 'translate-x-0 lg:translate-x-0'
                     : 'translate-x-full lg:translate-x-0'
                 )}
-                isOpen={!dmsOpen && (isMobileUsersOpen || isDesktopRightSidebarOpen)}
+                isOpen={
+                  !dmsOpen && (isMobileUsersOpen || isDesktopRightSidebarOpen)
+                }
               />
 
               <Protect permission={Permission.MANAGE_USERS}>

@@ -2,7 +2,10 @@ import { useCurrentVoiceChannelId } from '@/features/server/channels/hooks';
 import { useChannelCan } from '@/features/server/hooks';
 import { leaveVoice } from '@/features/server/voice/actions';
 import { useVoice } from '@/features/server/voice/hooks';
-import { canSwitchScreenShareSource, switchScreenShareSource } from '@/helpers/screen-share-switch';
+import {
+  canSwitchScreenShareSource,
+  switchScreenShareSource
+} from '@/helpers/screen-share-switch';
 import { cn } from '@/lib/utils';
 import { ChannelPermission } from '@sharkord/shared';
 import { Button } from '@sharkord/ui';
@@ -10,9 +13,9 @@ import {
   AlertTriangle,
   Loader2,
   Monitor,
-  ScreenShareOff,
   PhoneOff,
   RefreshCw,
+  ScreenShareOff,
   Video,
   VideoOff,
   Wifi,
@@ -132,7 +135,6 @@ const VoiceControl = memo(() => {
                   <RefreshCw className="h-4 w-4" />
                 </Button>
               )}
-
 
             {isScreenShareSupported && (
               <Button

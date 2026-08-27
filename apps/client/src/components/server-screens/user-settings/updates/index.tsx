@@ -172,7 +172,8 @@ const Updates = memo(() => {
       default:
         return {
           title: 'Updates',
-          detail: 'Check whether a newer version of Sharkord Desktop is available.'
+          detail:
+            'Check whether a newer version of Sharkord Desktop is available.'
         };
     }
   }, [progress, state.availableVersion, state.error, status]);

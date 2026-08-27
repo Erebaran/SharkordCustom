@@ -5,12 +5,7 @@ import {
 } from '@/features/server/hooks';
 import { getFileUrl } from '@/helpers/get-file-url';
 import { Permission } from '@sharkord/shared';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@sharkord/ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sharkord/ui';
 import {
   Database,
   HardDrive,
@@ -72,7 +67,10 @@ const ServerSettings = memo(({ close }: TServerSettingsProps) => {
   }, [can]);
 
   return (
-    <div data-sharkord-settings-overlay className="left-0 right-0 md:left-[72px] fixed inset-y-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] md:left-[72px] xl:p-5">
+    <div
+      data-sharkord-settings-overlay
+      className="left-0 right-0 md:left-[72px] fixed inset-y-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] md:left-[72px] xl:p-5"
+    >
       <style>{`
         [data-radix-popper-content-wrapper] {
           z-index: 1100 !important;
@@ -229,42 +227,66 @@ const ServerSettings = memo(({ close }: TServerSettingsProps) => {
 
             <div className="h-full overflow-y-scroll [scrollbar-gutter:stable]">
               <div className="mx-auto box-border w-full max-w-[860px] min-w-0 px-8 py-10 pr-20">
-                <TabsContent value="general" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="general"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('generalTab')} />
                   {can(Permission.MANAGE_SETTINGS) && <General />}
                 </TabsContent>
 
-                <TabsContent value="roles" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="roles"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('rolesTab')} />
                   {can(Permission.MANAGE_ROLES) && <Roles />}
                 </TabsContent>
 
-                <TabsContent value="emojis" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="emojis"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('emojisTab')} />
                   {can(Permission.MANAGE_EMOJIS) && <Emojis />}
                 </TabsContent>
 
-                <TabsContent value="storage" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="storage"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('storageTab')} />
                   {can(Permission.MANAGE_STORAGE) && <Storage />}
                 </TabsContent>
 
-                <TabsContent value="users" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="users"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('usersTab')} />
                   {can(Permission.MANAGE_USERS) && <Users />}
                 </TabsContent>
 
-                <TabsContent value="invites" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="invites"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('invitesTab')} />
                   {can(Permission.MANAGE_INVITES) && <Invites />}
                 </TabsContent>
 
-                <TabsContent value="plugins" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="plugins"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('pluginsTab')} />
                   {can(Permission.MANAGE_PLUGINS) && <Plugins />}
                 </TabsContent>
 
-                <TabsContent value="updates" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="updates"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('updatesTab')} />
                   {can(Permission.MANAGE_UPDATES) && <Updates />}
                 </TabsContent>

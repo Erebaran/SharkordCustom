@@ -38,7 +38,10 @@ if (!(window as any).__userSettingsDiagInstalled) {
     console.error(
       '[UserSettingsDiag] unhandledrejection ' +
         JSON.stringify({
-          reason: String((event as PromiseRejectionEvent).reason?.stack || (event as PromiseRejectionEvent).reason)
+          reason: String(
+            (event as PromiseRejectionEvent).reason?.stack ||
+              (event as PromiseRejectionEvent).reason
+          )
         })
     );
   });
@@ -85,7 +88,7 @@ const ServerScreensProvider = memo(() => {
         props
       })
   );
-let component: JSX.Element | null = null;
+  let component: JSX.Element | null = null;
 
   if (openServerScreen && ScreensMap[openServerScreen]) {
     const baseProps = {

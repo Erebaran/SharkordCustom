@@ -1,6 +1,6 @@
 import { UserAvatar } from '@/components/user-avatar';
-import { disconnectVoiceUser } from '@/features/server/voice/actions';
 import { useStreamVolumeControl } from '@/components/voice-provider/hooks/use-stream-volume-control';
+import { disconnectVoiceUser } from '@/features/server/voice/actions';
 import {
   Button,
   ContextMenu,
@@ -33,7 +33,6 @@ type TStreamContextMenuProps = {
 
 const StreamContextMenu = (props: TStreamContextMenuProps) => {
   const { t } = useTranslation('sidebar');
-
 
   const handleDisconnectUser = async () => {
     if (props.type !== 'user') return;

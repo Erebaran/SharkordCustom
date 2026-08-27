@@ -1,11 +1,6 @@
 import { UserAvatar } from '@/components/user-avatar';
 import { useOwnPublicUser } from '@/features/server/users/hooks';
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger
-} from '@sharkord/ui';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@sharkord/ui';
 import {
   Bell,
   Download,
@@ -47,7 +42,10 @@ const UserSettings = memo(({ close }: TUserSettingsProps) => {
   const ownPublicUser = useOwnPublicUser();
 
   return (
-    <div data-sharkord-settings-overlay className="left-0 right-0 md:left-[72px] fixed inset-y-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] md:left-[72px] xl:p-5">
+    <div
+      data-sharkord-settings-overlay
+      className="left-0 right-0 md:left-[72px] fixed inset-y-0 bottom-0 top-8 z-[1000] flex items-center justify-center bg-black/70 p-0 backdrop-blur-[1px] md:left-[72px] xl:p-5"
+    >
       <style>{`
         [data-radix-popper-content-wrapper] {
           z-index: 1100 !important;
@@ -100,55 +98,37 @@ const UserSettings = memo(({ close }: TUserSettingsProps) => {
               </div>
 
               <TabsList className="flex h-auto w-full flex-col items-stretch gap-1 bg-transparent p-0">
-                <TabsTrigger
-                  value="profile"
-                  className={navItemClass}
-                >
+                <TabsTrigger value="profile" className={navItemClass}>
                   <UserRound className="h-4 w-4 shrink-0" />
                   <span>{t('profileTab')}</span>
                 </TabsTrigger>
 
-                <TabsTrigger
-                  value="devices"
-                  className={navItemClass}
-                >
+                <TabsTrigger value="devices" className={navItemClass}>
                   <MonitorCog className="h-4 w-4 shrink-0" />
                   <span>{t('devicesTab')}</span>
                 </TabsTrigger>
 
-                <TabsTrigger
-                  value="password"
-                  className={navItemClass}
-                >
+                <TabsTrigger value="password" className={navItemClass}>
                   <KeyRound className="h-4 w-4 shrink-0" />
                   <span>{t('passwordTab')}</span>
                 </TabsTrigger>
 
-                <TabsTrigger
-                  value="notifications"
-                  className={navItemClass}
-                >
+                <TabsTrigger value="notifications" className={navItemClass}>
                   <Bell className="h-4 w-4 shrink-0" />
                   <span>{t('notificationsTab')}</span>
                 </TabsTrigger>
 
                 <div className="my-2 h-px bg-border/70" />
 
-                <TabsTrigger
-                  value="others"
-                  className={navItemClass}
-                >
+                <TabsTrigger value="others" className={navItemClass}>
                   <Palette className="h-4 w-4 shrink-0" />
                   <span>{t('othersTab')}</span>
                 </TabsTrigger>
 
-            <TabsTrigger
-              value="updates"
-              className={navItemClass}
-            >
-              <Download className="h-4 w-4 shrink-0" />
-              <span>Updates</span>
-            </TabsTrigger>
+                <TabsTrigger value="updates" className={navItemClass}>
+                  <Download className="h-4 w-4 shrink-0" />
+                  <span>Updates</span>
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -172,35 +152,53 @@ const UserSettings = memo(({ close }: TUserSettingsProps) => {
 
             <div className="h-full overflow-y-scroll [scrollbar-gutter:stable]">
               <div className="mx-auto w-full max-w-[820px] px-8 py-10 pr-20">
-                <TabsContent value="profile" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="profile"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('profileTab')} />
                   <Profile />
                 </TabsContent>
 
-                <TabsContent value="devices" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="devices"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('devicesTab')} />
                   <Devices />
                 </TabsContent>
 
-                <TabsContent value="password" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="password"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('passwordTab')} />
                   <Password />
                 </TabsContent>
 
-                <TabsContent value="notifications" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="notifications"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('notificationsTab')} />
                   <Notifications />
                 </TabsContent>
 
-                <TabsContent value="others" className="m-0 w-full min-w-0 [&>*]:w-full">
+                <TabsContent
+                  value="others"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
                   <SectionTitle title={t('othersTab')} />
                   <Others />
                 </TabsContent>
 
-          <TabsContent value="updates" className="m-0 w-full min-w-0 [&>*]:w-full">
-            <SectionTitle title="Updates" />
-            <Updates />
-          </TabsContent>
+                <TabsContent
+                  value="updates"
+                  className="m-0 w-full min-w-0 [&>*]:w-full"
+                >
+                  <SectionTitle title="Updates" />
+                  <Updates />
+                </TabsContent>
               </div>
             </div>
           </main>

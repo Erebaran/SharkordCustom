@@ -1,7 +1,10 @@
 import { useChannelCan } from '@/features/server/hooks';
 import { leaveVoice } from '@/features/server/voice/actions';
 import { useOwnVoiceState, useVoice } from '@/features/server/voice/hooks';
-import { canSwitchScreenShareSource, switchScreenShareSource } from '@/helpers/screen-share-switch';
+import {
+  canSwitchScreenShareSource,
+  switchScreenShareSource
+} from '@/helpers/screen-share-switch';
 import { cn } from '@/lib/utils';
 import { ChannelPermission } from '@sharkord/shared';
 import { Button, Tooltip } from '@sharkord/ui';
@@ -90,7 +93,6 @@ const ControlsBar = memo(({ channelId }: TControlsBarProps) => {
               </Button>
             </Tooltip>
           )}
-
 
         {isScreenShareSupported && (
           <ControlToggleButton

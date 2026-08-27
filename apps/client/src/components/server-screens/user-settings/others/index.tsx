@@ -109,7 +109,11 @@ const Others = memo(() => {
           </Group>
 
           <Group
-            label={gradientEnabled ? 'Primeira cor' : 'Cor da barra superior e do dock'}
+            label={
+              gradientEnabled
+                ? 'Primeira cor'
+                : 'Cor da barra superior e do dock'
+            }
             description="A alteração é aplicada imediatamente e fica salva neste dispositivo."
           >
             <div className="flex items-center gap-3">

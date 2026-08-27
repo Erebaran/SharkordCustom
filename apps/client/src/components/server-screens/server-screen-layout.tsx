@@ -12,7 +12,8 @@ type TServerScreenLayoutProps = {
 
 const headerStyle = {
   WebkitAppRegion: 'drag',
-  background: 'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+  background:
+    'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
 } as CSSProperties;
 
 const noDragStyle = {

@@ -75,7 +75,9 @@ const ServerDropdownMenu = memo(
           <DropdownMenuSeparator />
 
           <Protect permission={Permission.MANAGE_CATEGORIES}>
-            <DropdownMenuItem onClick={() => openDialog(Dialog.CREATE_CATEGORY)}>
+            <DropdownMenuItem
+              onClick={() => openDialog(Dialog.CREATE_CATEGORY)}
+            >
               {t('addCategory')}
             </DropdownMenuItem>
           </Protect>

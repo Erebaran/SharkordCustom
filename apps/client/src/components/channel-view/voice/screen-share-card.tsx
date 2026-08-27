@@ -7,8 +7,8 @@ import { useWebRtcSimulcastEnabled } from '@/features/server/hooks';
 import { useOwnUserId, useUserById } from '@/features/server/users/hooks';
 import { useVoice } from '@/features/server/voice/hooks';
 import { useStreamQualityData } from '@/hooks/use-stream-quality-data';
-import { cn } from '@/lib/utils';
 import { getTRPCClient } from '@/lib/trpc';
+import { cn } from '@/lib/utils';
 import { StreamKind } from '@sharkord/shared';
 import { IconButton } from '@sharkord/ui';
 import { Monitor, ZoomIn, ZoomOut } from 'lucide-react';
@@ -95,7 +95,6 @@ const ScreenShareControls = memo(
     );
   }
 );
-
 
 const MAX_VISIBLE_VIEWERS = 5;
 const VIEWERS_REFRESH_INTERVAL_MS = 2000;
@@ -203,7 +202,8 @@ const ScreenShareCard = memo(
 
       const refreshViewers = async () => {
         try {
-          const viewerIds = await getTRPCClient().voice.getScreenViewers.query();
+          const viewerIds =
+            await getTRPCClient().voice.getScreenViewers.query();
           if (disposed) return;
 
           const nextViewerIds = Array.from(new Set(viewerIds))

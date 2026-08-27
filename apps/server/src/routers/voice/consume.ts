@@ -1,9 +1,9 @@
 import { Permission, ServerEvents, StreamKind } from '@sharkord/shared';
 import { z } from 'zod';
 import { VoiceRuntime } from '../../runtimes/voice';
-import { addScreenViewer, removeScreenViewer } from './screen-viewers';
 import { invariant } from '../../utils/invariant';
 import { protectedProcedure } from '../../utils/trpc';
+import { addScreenViewer, removeScreenViewer } from './screen-viewers';
 
 const consumeRoute = protectedProcedure
   .input(

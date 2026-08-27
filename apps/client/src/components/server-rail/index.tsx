@@ -1,8 +1,8 @@
-import { getFileUrl } from '@/helpers/get-file-url';
-import '@/helpers/chrome-color';
 import { setDmsOpen } from '@/features/server/actions';
 import { setSelectedChannelId } from '@/features/server/channels/actions';
 import { useDmsOpen, usePublicServerSettings } from '@/features/server/hooks';
+import '@/helpers/chrome-color';
+import { getFileUrl } from '@/helpers/get-file-url';
 import { Plus, Server, Trash2 } from 'lucide-react';
 import { memo, useCallback, useEffect, useState } from 'react';
 
@@ -33,7 +33,10 @@ const getDesktopApi = () =>
   ).sharkordDesktopServers;
 
 const firstLetter = (value?: string) =>
-  String(value || '?').trim().charAt(0).toUpperCase() || '?';
+  String(value || '?')
+    .trim()
+    .charAt(0)
+    .toUpperCase() || '?';
 
 const ServerRail = memo(() => {
   const publicSettings = usePublicServerSettings();
@@ -161,10 +164,13 @@ const ServerRail = memo(() => {
 
   return (
     <>
-      <aside className="hidden h-full w-[72px] shrink-0 flex-col items-center pt-6 md:flex "
-        style={{background: 'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))',}}
+      <aside
+        className="hidden h-full w-[72px] shrink-0 flex-col items-center pt-6 md:flex "
+        style={{
+          background:
+            'var(--sharkord-chrome-background, var(--sharkord-chrome-color, hsl(var(--card))))'
+        }}
       >
-
         <button
           type="button"
           title="Direct Messages"
@@ -194,10 +200,9 @@ const ServerRail = memo(() => {
           {(state.servers || []).map((server) => {
             const active = !dmsOpen && server.url === state.currentServer;
             const isCurrentServer = server.url === state.currentServer;
-            const serverAvatarUrl =
-              isCurrentServer
-                ? currentServerLogoUrl || server.avatarDataUrl
-                : server.avatarDataUrl;
+            const serverAvatarUrl = isCurrentServer
+              ? currentServerLogoUrl || server.avatarDataUrl
+              : server.avatarDataUrl;
 
             return (
               <div
@@ -216,20 +221,20 @@ const ServerRail = memo(() => {
                       : 'rounded-full hover:rounded-2xl hover:bg-accent'
                   ].join(' ')}
                 >
-                {active && (
-                  <span className="absolute -left-2 h-8 w-1 rounded-r bg-foreground" />
-                )}
+                  {active && (
+                    <span className="absolute -left-2 h-8 w-1 rounded-r bg-foreground" />
+                  )}
 
-                {serverAvatarUrl ? (
-                  <img
-                    src={serverAvatarUrl}
-                    alt=""
-                    className="h-full w-full object-cover"
-                    draggable={false}
-                  />
-                ) : (
-                  <span>{firstLetter(server.name)}</span>
-                )}
+                  {serverAvatarUrl ? (
+                    <img
+                      src={serverAvatarUrl}
+                      alt=""
+                      className="h-full w-full object-cover"
+                      draggable={false}
+                    />
+                  ) : (
+                    <span>{firstLetter(server.name)}</span>
+                  )}
                 </button>
 
                 <button
